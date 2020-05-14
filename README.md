@@ -3,7 +3,7 @@ My competitive programming contest, training, and competitions so far
 
 # Useful links
 ## Materials
-[GeeksforGeeks] (https://www.geeksforgeeks.org/)
+[GeeksforGeeks](https://www.geeksforgeeks.org/)
 
 
 ## Contest and Problems
