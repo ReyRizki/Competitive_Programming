@@ -1,4 +1,3 @@
-// Kotlin Hello World Program
 fun main(args: Array<String>) {
     var t: Int = readLine()!!.toInt()
 
