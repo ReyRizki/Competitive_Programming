@@ -17,33 +17,29 @@ fun main(args: Array<String>)
             {
                 if (x[j] == y[k])
                 {
-                    a = j
-                    b = k
-                    found = true
-                    break@outer
+                    // println("${x[j]} ${y[k]}")
+
+                    if (j == 0)
+                        a = 1
+                    else if (j == 1)
+                        a = 0
+                    
+                    if (k == 0)
+                        b = 1
+                    else if (k == 1)
+                        b = 0
+
+                    if (x[a] + y[b] == x[j])
+                    {
+                        found = true
+                        break@outer
+                    }
                 }
             }
         }
 
-        var c: Int = 0
-        if (a == 0)
-            c = 1
-        else if (a == 1)
-            c = 0
-
-        var d: Int = 0
-        if (b == 0)
-            d = 1
-        else if (b == 1)
-            d = 0
-
         if (found)
-        {
-            if (x[c] + y[d] == x[a])
-                println("Yes")
-            else
-                println("No")
-        }
+            println("Yes")
         else
             println("No")
     }
