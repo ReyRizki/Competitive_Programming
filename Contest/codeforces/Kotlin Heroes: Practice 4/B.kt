@@ -17,8 +17,6 @@ fun main(args: Array<String>)
             {
                 if (x[j] == y[k])
                 {
-                    // println("${x[j]} ${y[k]}")
-
                     if (j == 0)
                         a = 1
                     else if (j == 1)
