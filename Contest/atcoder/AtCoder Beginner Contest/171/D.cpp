@@ -13,21 +13,35 @@ using namespace std;
 
 int main()
 {
+    vector<int> A(100000);
+
     u int N;
     cin >> N;
-    vector<u int> vect(N);
 
-    for (auto it = vect.begin(); it != vect.end(); it++)
-        cin >> *it;
+    ll int sum = 0;
+    REP(i, 0, N)
+    {
+        u int a;
+        cin >> a;
+        sum += a;
+        A[a - 1]++;
+    }
+
+    // for (auto it = vect.begin(); it != vect.end(); it++)
+    //     cin >> *it;
 
     u int Q;
     cin >> Q;
 
     REP(i, 0, Q)
     {
-        u int B, C;
+        int B, C;
         cin >> B >> C;
-        replace(vect.begin(), vect.end(), B, C);
-        cout << accumulate(vect.begin(), vect.end(), 0) << "\n";
+        
+        sum = sum + (A[B - 1] * (C - B));
+        cout << sum << "\n";
+
+        A[C - 1] += A[B - 1];
+        A[B - 1] = 0;
     }
 }
