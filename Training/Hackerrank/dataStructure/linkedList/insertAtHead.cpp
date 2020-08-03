@@ -16,9 +16,11 @@ class SinglyLinkedListNode {
 class SinglyLinkedList {
     public:
         SinglyLinkedListNode *head;
+        SinglyLinkedListNode *tail;
 
         SinglyLinkedList() {
             this->head = nullptr;
+            this->tail = nullptr;
         }
 
 };
@@ -44,24 +46,7 @@ void free_singly_linked_list(SinglyLinkedListNode* node) {
     }
 }
 
-SinglyLinkedListNode* getTail(SinglyLinkedListNode* head)
-{
-    if (head == NULL)
-        return head;
-
-    SinglyLinkedListNode* current = head;
-    SinglyLinkedListNode* peek = current->next;
-
-    while(peek != NULL)
-    {
-        current = peek;
-        peek = peek->next;
-    }
-
-    return current;
-}
-
-// Complete the insertNodeAtTail function below.
+// Complete the insertNodeAtHead function below.
 
 /*
  * For your reference:
@@ -72,31 +57,12 @@ SinglyLinkedListNode* getTail(SinglyLinkedListNode* head)
  * };
  *
  */
-SinglyLinkedListNode* insertNodeAtTail(SinglyLinkedListNode* head, int data) {
-    SinglyLinkedListNode* node = new SinglyLinkedListNode(data);
-	
-    if (head == NULL)
-        head = node;
-    else
-    {
-        SinglyLinkedListNode* tail = getTail(head);
+SinglyLinkedListNode* insertNodeAtHead(SinglyLinkedListNode* llist, int data) {
+	SinglyLinkedListNode* node = new SinglyLinkedListNode(data);
 
-        tail->next = node;
-    }
-    
-    return head;
-}
+    node->next = llist;
 
-void printLinkedList(SinglyLinkedListNode* head) {
-    SinglyLinkedListNode* current = head;
-    
-    if (current == NULL)
-        return;
-
-    do
-    {
-        cout << current->data << "\n";
-    } while ((current = current->next) != NULL);
+    return node;
 }
 
 int main()
@@ -115,15 +81,13 @@ int main()
         cin >> llist_item;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-    	SinglyLinkedListNode* llist_head = insertNodeAtTail(llist->head, llist_item);
+    	SinglyLinkedListNode* llist_head = insertNodeAtHead(llist->head, llist_item);
       	llist->head = llist_head;
     }
 
 
     print_singly_linked_list(llist->head, "\n", fout);
     fout << "\n";
-
-    printLinkedList(llist->head);
 
     free_singly_linked_list(llist->head);
 
