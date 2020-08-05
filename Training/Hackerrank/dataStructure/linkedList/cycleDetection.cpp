@@ -57,20 +57,7 @@ void free_singly_linked_list(SinglyLinkedListNode* node) {
     }
 }
 
-void printLinkedList(SinglyLinkedListNode* head) {
-    SinglyLinkedListNode* current = head;
-    
-    if (current == NULL)
-        return;
-
-    do
-    {
-        cout << current->data << " ";
-    } while ((current = current->next) != NULL);
-    cout << "\n";
-}
-
-// Complete the removeDuplicates function below.
+// Complete the has_cycle function below.
 
 /*
  * For your reference:
@@ -81,36 +68,38 @@ void printLinkedList(SinglyLinkedListNode* head) {
  * };
  *
  */
-SinglyLinkedListNode* removeDuplicates(SinglyLinkedListNode* head) {
-    SinglyLinkedListNode* current = head;
+bool has_cycle(SinglyLinkedListNode* head) {
+    SinglyLinkedListNode* slow = head;
+    SinglyLinkedListNode* fast;
 
-    while (current != NULL)
+    if (head and head->next)
+        fast = head->next->next;
+
+    while (head and fast and fast->next)
     {
-        if ((current->next == NULL) or (current->data != current->next->data))
-            current = current->next;
-        else if (current->data == current->next->data)
-        {
-            SinglyLinkedListNode* target = current->next;
+        if (head == fast)
+            return 1;
 
-            current->next = target->next;
-            target->next = NULL;
-
-            free(target);
-        }
+        head = head->next;
+        fast = fast->next->next;
     }
-
-    return head;
+    
+    return 0;
 }
 
 int main()
 {
     ofstream fout(getenv("OUTPUT_PATH"));
 
-    int t;
-    cin >> t;
+    int tests;
+    cin >> tests;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-    for (int t_itr = 0; t_itr < t; t_itr++) {
+    for (int tests_itr = 0; tests_itr < tests; tests_itr++) {
+        int index;
+        cin >> index;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
         SinglyLinkedList* llist = new SinglyLinkedList();
 
         int llist_count;
@@ -124,15 +113,25 @@ int main()
 
             llist->insert_node(llist_item);
         }
+      
+      	SinglyLinkedListNode* extra = new SinglyLinkedListNode(-1);
+      	SinglyLinkedListNode* temp = llist->head;
+      
+      	for (int i = 0; i < llist_count; i++) {
+            if (i == index) {
+          		extra = temp;
+            }
+          	
+          	if (i != llist_count-1) {
+          		temp = temp->next;
+            }
+        }
+      
+      	temp->next = extra;
 
-        SinglyLinkedListNode* llist1 = removeDuplicates(llist->head);
+        bool result = has_cycle(llist->head);
 
-        print_singly_linked_list(llist1, " ", fout);
-        fout << "\n";
-
-        printLinkedList(llist1);
-
-        free_singly_linked_list(llist1);
+        fout << result << "\n";
     }
 
     fout.close();
