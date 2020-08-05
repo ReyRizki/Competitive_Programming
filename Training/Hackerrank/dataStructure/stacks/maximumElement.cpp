@@ -16,40 +16,48 @@ void printStack(stack<int> st)
     cout << "\n";
 }
 
-int maxElement(stack<int> st)
-{
-    int max = 0;
-
-    while (!st.empty())
-    {
-        if (st.top() > max)
-            max = st.top();
-        st.pop();
-    }
-
-    return max;
-}
-
 void solve()
 {
     int n; cin >> n;
     stack<int> st;
+    int maxElement = 0;
 
     while (n--)
     {
         int type; cin >> type;
-
+        int y;
         switch (type)
         {
         case 1:
             int x; cin >> x;
-            st.push(x); break;
+            if (st.empty())
+            {
+                st.push(x);
+                maxElement = x;
+            }
+            else
+            {
+                if (x > maxElement)
+                {
+                    st.push(2 * x - maxElement);
+                    maxElement = x;
+                }
+                else
+                    st.push(x);
+            }
+            break;
         
         case 2:
-            st.pop(); break;
+            y = st.top();
+            if (y > maxElement)
+                maxElement = ((2 * maxElement) - y);
+            
+            st.pop();
+            break;
 
         case 3:
-            cout << maxElement(st) << "\n"; break;
+            cout << maxElement << "\n";
+            break;
 
         default:
             break;
