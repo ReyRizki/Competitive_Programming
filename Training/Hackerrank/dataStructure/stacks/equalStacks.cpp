@@ -4,65 +4,35 @@ using namespace std;
 
 vector<string> split_string(string);
 
-stack<unsigned long long int> createSumStack(vector<int> vect)
-{
-    stack<unsigned long long int> result;
-
-    result.push(0);
-    
-    for (auto it = vect.rbegin(); it != vect.rend(); ++it)
-        result.push(result.top() + *it);
-
-    return result;
-}
-
-void printStack(stack<int> st)
-{
-    while (not st.empty())
-    {
-        cout << st.top() << " ";
-        st.pop();
-    }
-
-    cout << "\n";
-}
-
 /*
  * Complete the equalStacks function below.
  */
-unsigned long long int equalStacks(vector<int> h1, vector<int> h2, vector<int> h3) {
+int equalStacks(vector<int> h1, vector<int> h2, vector<int> h3) {
     /*
      * Write your code here.
      */
-    stack<unsigned long long int> s1 = createSumStack(h1);
-    stack<unsigned long long int> s2 = createSumStack(h2);
-    stack<unsigned long long int> s3 = createSumStack(h3);
+    vector<vector<int>> vects(3);
+    vects[0] = h1;
+    vects[1] = h2;
+    vects[2] = h3;
 
-    if (s2.size() < s1.size())
-        swap(s1, s2);
-
-    if (s3.size() < s1.size())
-        swap(s1, s3);
-
-    
-    while ((s1.top() != s2.top()) and (s1.top() != s3.top()))
+    map<int, int> sumResult;
+    for (int i = 0; i < 3; i++)
     {
-        while (s2.top() > s1.top())
-            s2.pop();
-        
-        while (s3.top() > s1.top())
-            s3.pop();
-
-        if ((s1.top() == s2.top()) and (s1.top() == s3.top()))
-            return s1.top();
-        
-        s1.pop();
+        int sum = 0;
+        for (auto it = vects[i].rbegin(); it != vects[i].rend(); ++it)
+        {
+            sum += *it;
+            sumResult[sum]++;
+        }
     }
 
-    if ((s1.top() == s2.top()) and (s1.top() == s3.top()))
-        return s1.top();
-    return 0;
-    // printStack(s1);
+    int result = 0;
+    for (auto it = sumResult.begin(); it != sumResult.end(); ++it)
+        if (it->second == 3)
+            result = max(result, it->first);
+
+    return result;
 }
 
 int main()
@@ -119,10 +89,9 @@ int main()
         h3[h3_itr] = h3_item;
     }
 
-    unsigned long long int result = equalStacks(h1, h2, h3);
+    int result = equalStacks(h1, h2, h3);
 
     fout << result << "\n";
-    // cout << result << "\n";
 
     fout.close();
 
