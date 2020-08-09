@@ -12,57 +12,70 @@ void printVector(vector<int> vect)
     cout << "\n";
 }
 
-void arrange(vector<int> &v1, vector<int> &v2)
+vector<int> mergeVector(vector<int> v1, vector<int> v2)
 {
-    if ((v2.size() > v1.size()) or ((v1.size() == v2.size()) and (v2[0] < v1[0])))
-        swap(v1, v2);
+    int i = 0, j = 0;
+    vector<int> result;
+    while ((i < v1.size()) or (j < v2.size()))
+    {
+        if (((i < v1.size()) and (v1[i] < v2[j])) or (j >= v2.size()))
+        {
+            result.push_back(v1[i]);
+            i++;
+        }
+        else if (((j < v2.size()) and (v2[j] < v1[i])) or (i >= v1.size()))
+        {
+            result.push_back(v2[j]);
+            j++;
+        }
+    }
+
+    return result;
 }
 
-bool isValid(vector<int> v1, vector<int> v2)
+bool isValid(string s, vector<int> v1, vector<int> v2)
 {
     int diff = v1.size() - v2.size();
     if ((diff < -1) or (diff > 1))
         return 0;
 
-    arrange(v1, v2);
-
-    int size = v2.size();
-    REP(i, 0, size)
-        if (v2[i] < v1[i])
+    char prev = 0;
+    vector<int> two = mergeVector(v1, v2);
+    REP(i, 0, two.size())
+    {
+        if (prev == s[two[i]])
             return 0;
-
-    if ((v1.size() > v2.size()) and (v1.back() < v2.back()))
-        return 0;
+        else
+            prev = s[two[i]];
+    }
 
     return 1;
 }
 
-
 void solve()
 {
     map<char, vector<int>> indices;
+    string s;
     int n; cin >> n;
 
     REP(i, 0, n)
     {
         char x; cin >> x;
+        s.push_back(x);
         indices[x].push_back(i);
     }
-    
+
     int result = 0;
     for (auto i = indices.begin(); i != prev(indices.end(), 1); ++i)
     {
         for (auto j = next(i, 1); j != indices.end(); ++j)
         {
-            if (isValid(i->second, j->second))
+            if (isValid(s, i->second, j->second))
             {
-                cout << i->first << " " << j->first << "\n";
-
                 int candidate = i->second.size() + j->second.size();
                 if (candidate > result)
                     result = candidate;
             }
-
         }
     }
 
