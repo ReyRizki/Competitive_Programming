@@ -1,83 +1,68 @@
-#include <bits/stdc++.h>
-
-#define REP(i, a, b) for (auto i = (a); i < (b); i++)
-#define REPR(i, a, b) for (auto i = (a-1); i >= (b); i--)
-
+#include <iostream>
 using namespace std;
 
-void printVector(vector<int> v)
-{
-    for (auto it = v.begin(); it != v.end(); ++it)
-        cout << *it << " ";
-    cout << "\n";
-}
+int temp[100000];
 
-int getSum(vector<int> v, int i)
+long int join(int s[], int left, int mid, int right)
 {
-    int sum = 0;
-
-    while (i > 0)
+    long int shift=0;
+    int i=left, j=mid, k=left;
+    while(i<mid && j<=right)
     {
-        sum += v[i];
-
-        i -= i & -i;
+        if(s[i] <= s[j]){
+            temp[k]=s[i];
+            k++, i++;
+        }
+        else{
+            temp[k]=s[j];
+            k++, j++;
+            shift += mid-i;
+        }
     }
-
-    return sum;
-}
-
-void updateBITree(vector<int> &v, int n, int i, int val)
-{
-    while (i <= n)
-    {
-        v[i] += val;
-
-        i += i & - i;
+    while(i<mid){
+        temp[k] = s[i];
+        k++, i++;
     }
-}
-
-void convert(vector<int> &v, int n)
-{
-    vector<int> temp = v;
-
-    sort(temp.begin(), temp.end());
     
-    for (auto it = v.begin(); it != v.end(); ++it)
-        *it = find(temp.begin(), temp.end(), *it) - temp.begin() + 1;
-}
-  
-void solve()
-{
-    int n; cin >> n;
-    vector<int> v(n);
-
-    REP(i, 0, n)
-        cin >> v[i];
-
-    convert(v, n);
-
-    vector<int> BITree(n + 1, 0);
-
-    int result = 0;
-    REPR(i, n, 0)
-    {
-        result += getSum(BITree, v[i] - 1);
-
-        updateBITree(BITree, n, v[i], 1);
+    while(j<=right){
+        temp[k] = s[j];
+        k++, j++;
     }
+    
+    while(left<=right){
+        s[left] = temp[left];
+        left++;
+    }
+    return shift;
+}
 
-    cout << result << "\n";
+long int mergeSort(int s[], int left, int right)
+{
+    long int shift = 0;
+    if(left < right)
+    {
+        int mid = left + (right-left)/2;
+        shift += mergeSort(s, left, mid);
+        shift += mergeSort(s, mid+1, right);
+        shift += join(s, left, mid+1, right);
+    }
+    return shift;
 }
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-
-    int t = 1; cin >> t;
-
-    while (t--)
-        solve();
-
+    int n, t;
+    cin >> t;
+    while(t--)
+    {
+        cin >> n;
+        int s[n];
+        for(int i=0; i<n; i++)
+            cin >> s[i];
+         
+        long int shift = mergeSort(s, 0, n-1);
+        
+        cout << shift << endl;
+    }
     return 0;
 }
