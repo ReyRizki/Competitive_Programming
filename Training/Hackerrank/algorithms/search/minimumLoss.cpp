@@ -8,28 +8,28 @@ using namespace std;
 void solve()
 {
     int n; cin >> n;
-    map<int, int> num;
+    
+    set<long long int> s;
 
+    long long int minLoss = INT64_MAX;
     REP(i, 0, n)
     {
-        int x; cin >> x;
-        num[x]++;
+        long long int x; cin >> x;
+
+        if (s.count(x))
+            minLoss = 0;
+        else
+        {
+            auto it = s.upper_bound(x);
+
+            if (it != s.end())
+                minLoss = min(minLoss, *it - x);
+        }
+
+        s.insert(x);
     }
 
-    int m; cin >> m;
-    map<int, int> original;
-    REP(i, 0, m)
-    {
-        int x; cin >> x;
-
-        original[x]++;
-    }
-
-    for (auto it = original.begin(); it != original.end(); ++it)
-        if ((it->second - num[it->first]) > 0)
-            cout << it->first << " ";
-
-    cout << "\n";
+    cout << minLoss << "\n";
 }
 
 int main()
