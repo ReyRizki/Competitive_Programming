@@ -5,47 +5,54 @@
 
 using namespace std;
 
-char minChar(string s)
+bool checkSum(map<char, int> prev, map<char, int> curr)
 {
-    char result = 'z';
+    int prevSum = 0, currSum = 0;
 
-    for (char c: s)
-        result = min(result, c);
-
-    return result;
-}
-
-bool check(vector<string> v)
-{
-    char prev = 'a';
-
-    for (auto it = v.begin(); it != v.end(); ++it)
+    for (int i = 0; i < 26; i++)
     {
-        char temp = minChar(*it);
+        prevSum += prev['a' + i];
+        currSum += curr['a' + i];
 
-        if (temp < prev)
-            return false;
-        else
-            prev = temp;
+        if (prevSum < currSum)
+            return 0;
     }
 
-    return true;
+    return 1;
 }
 
 void solve()
 {
     int n; cin >> n;
 
-    vector<string> v;
+    map<char, int> prev;
+
+    bool can = 1;
 
     REP(i, 0, n)
     {
         string s; cin >> s;
 
-        v.push_back(s);
+        if (i == 0)
+        {
+            for (char c: s)
+                prev[c]++;    
+        }
+        else
+        {
+            if (can)
+            {
+                map<char, int> curr;
+
+                for (char c: s)
+                    curr[c]++;
+
+                can = checkSum(prev, curr);
+            }
+        }
     }
 
-    cout << (check(v) ? "YES" : "NO") << "\n";
+    cout << (can ? "YES" : "NO") << "\n";
 }
 
 int main()

@@ -7,37 +7,40 @@ using namespace std;
 
 void solve()
 {
-    int n, k; cin >> n >> k;
+    int n; cin >> n;
 
-    vector<int> v(n);
+    map<int, int> ma;
 
     REP(i, 0, n)
     {
         int x; cin >> x;
 
-        v[i] = x;
+        ma[x]++;
     }
+
+    vector<int> vb;
+    int result = 0;
 
     REP(i, 0, n)
     {
-        if ((v[i] != n - i) and (k != 0))
+        int x; cin >> x;
+
+        if (ma[x] > 0)
         {
-            int j = i + 1;
-
-            while (v[j] != n - i)
-                j++;
-                
-            int temp = v[i];
-            v[i] = v[j];
-            v[j] = temp;
-
-            k--;
+            ma[x]--;
+            
+            result++;
         }
+        else
+            vb.push_back(x);
     }
 
-    for (auto it = v.begin(); it != v.end(); ++it)
-        cout << *it << " ";
-    cout << "\n";
+    if (vb.size() > 0)
+        result++;
+    else
+        result--;
+    
+    cout << result << "\n";
 }
 
 int main()

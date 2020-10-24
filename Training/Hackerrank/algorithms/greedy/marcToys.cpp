@@ -9,35 +9,26 @@ void solve()
 {
     int n, k; cin >> n >> k;
 
-    vector<int> v(n);
+    vector<int> v;
 
     REP(i, 0, n)
     {
         int x; cin >> x;
 
-        v[i] = x;
+        v.push_back(x);
     }
 
-    REP(i, 0, n)
+    sort(v.begin(), v.end());
+
+    int i = 0, result = 0;
+    while ((i < n) and (k >= v[i]))
     {
-        if ((v[i] != n - i) and (k != 0))
-        {
-            int j = i + 1;
-
-            while (v[j] != n - i)
-                j++;
-                
-            int temp = v[i];
-            v[i] = v[j];
-            v[j] = temp;
-
-            k--;
-        }
+        k -= v[i];
+        
+        result++, i++;
     }
 
-    for (auto it = v.begin(); it != v.end(); ++it)
-        cout << *it << " ";
-    cout << "\n";
+    cout << result << "\n";
 }
 
 int main()
