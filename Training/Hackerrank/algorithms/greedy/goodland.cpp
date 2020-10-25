@@ -5,30 +5,53 @@
 
 using namespace std;
 
-int customUpperBound(vector<int> v, int start, int end, int x)
+bool isCovered(vector<int> v, int x, int k)
 {
-    
+    for (auto it = v.begin(); it != v.end(); ++it)
+        if ((x >= *it - k) or (x <= *it + k))
+            return 1;
+
+    return 0;
+}
+
+int buildTarget(vector<bool> v, int start, int end)
+{
+    REPR(i, end + 1, start)
+    {
+        if (v[i])
+            return i;
+    }
+
+    return -1;
 }
 
 void solve()
 {
     int n, k; cin >> n >> k;
 
-    vector<int> v;
+    vector<bool> v;
 
     REP(i, 0, n)
     {
-        int x; cin >> x;
+        bool x; cin >> x;
 
-        if (x)
-            v.push_back(i);
+        v.push_back(x);
     }
 
-    for (auto it = v.begin(); it != v.end(); ++it)
-        cout << *it << " ";
-    cout << "\n";
+    vector<int> build;
 
-    cout << *(upper_bound(v.begin() + 0, v.begin() + 0 + k - 1, 0 + k - 1)) << "\n";
+    REP(i, 0, n - k + 1)
+    {
+        if (not isCovered(build, i, k))
+        {
+            int temp = buildTarget(v, i, i + k - 1);
+
+            if (temp != -1)
+                build.push_back(temp);
+        }
+    }
+
+    // cout << buildTarget(v, 0, 2) << "\n";
 }
 
 int main()
