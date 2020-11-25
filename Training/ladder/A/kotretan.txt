@@ -1,0 +1,27 @@
+3
+3 1 2
+
+5
+1 5 4 2 3
+
+------
+
+5
+
+
+4 3 2 1
+
+target = n;
+
+REP(i, 0, n)
+{
+    int x; cin >> x;
+
+    v[x - 1] = 1
+
+    while (v[target - 1])
+    {
+        cout << target;
+        target--;
+    }   
+}

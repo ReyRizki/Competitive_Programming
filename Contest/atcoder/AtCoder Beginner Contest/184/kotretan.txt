@@ -1,0 +1,13 @@
+// input
+
+// sort
+
+// brute force approach
+// check if i > n
+// if yes, update max and return
+// check if result = t
+// if yes, return update max as result and return
+// loop from i to n
+// if result + v[i] <= t
+// recursive, update result and i
+// else, break
