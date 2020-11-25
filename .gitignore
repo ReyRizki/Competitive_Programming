@@ -3,4 +3,5 @@
 *.class
 META-INF
 *.exe
+*.txt
 *.test
