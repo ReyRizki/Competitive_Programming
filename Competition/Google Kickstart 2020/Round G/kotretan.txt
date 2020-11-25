@@ -1,0 +1,16 @@
+4 10
+
+2 3 8 9
+
+Val = 5
+j = 3
+i = 2
+
+3 3 8 8
+
+1 0 0 1
+
+y = 2
+movesToVal = 2 (2) + 2 (3) = 10
+
+j = upperbound(arr, val)
