@@ -5,64 +5,73 @@
 
 using namespace std;
 
-void dfs(vector<vector<int>> v, vector<bool> &visited, stack<int> &st, int i)
-{
-    if (visited[i])
-        return;
-    
-    visited[i] = 1;
-    for (auto x: v[i])
-        if (not visited[x])
-            dfs(v, visited, st, x);
-
-    st.push(i);
-}
-
 void solve()
 {
-    int n, k; scanf("%d %d", &n, &k);
+    int n, k; cin >> n >> k;
 
-    vector<bool> visited(n, 0);
     vector<vector<int>> graph(n);
 
     REP(i, 0, k)
     {
-        int w; scanf("%d", &w);
+        int w; cin >> w;
 
         REP(j, 0, w)
         {
-            int x; scanf("%d", &x);
+            int x; cin >> x;
 
             graph[i].push_back(x - 1);
         }
     }
 
-    stack<int> st;
+    vector<int> indegree(n, 0);
+
+    for (auto node: graph)
+        for (auto adj: node)
+            indegree[adj]++;
+
+    queue<int> q;
+    REP(i, 0, n)
+        if (indegree[i] == 0)
+            q.push(i);
+
+    vector<int> topsortResult;
+    while (not q.empty())
+    {
+        int curr = q.front();
+        topsortResult.push_back(curr);
+
+        for (auto adj: graph[curr])
+        {
+            indegree[adj]--;
+
+            if (indegree[adj] == 0)
+                q.push(adj);
+        }
+
+        // cout << q.front() << " ";
+        q.pop();
+    }
+    // cout << "\n";
+
+
+    int boss = -1;
+    vector<int> ans(n);
 
     REP(i, 0, n)
-        if (not visited[i])
-            dfs(graph, visited, st, i);
-
-    vector<int> result(n);
-    
-    int pos = -1;
-    while (not st.empty())
     {
-        result[st.top()] = pos;
-        pos = st.top();
-        
-        st.pop();
+        ans[topsortResult[i]] = boss + 1;
+        boss = topsortResult[i];
     }
 
-    for (auto x: result)
-        printf("%d\n", x + 1);
-    // printf("\n");
+    for (auto x: ans)
+        cout << x << "\n";
+    // cout << "\n";
 }   
 
 int main()
 {
-    // ios_base::sync_with_stdio(false);
-    // cin.tie(NULL);
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
 
     // freopen("in.txt", "r", stdin);
     // freopen("out.txt", "w", stdout);
